@@ -77,34 +77,36 @@ Program:
 
 Client
 ```
-import socket
-from datetime import datetime
-s=socket.socket()
-s.bind(('localhost',8000))
-s.listen(5)
-c,addr=s.accept()
-print("Client Address : ",addr)
-now = datetime.now()
-c.send(now.strftime("%d/%m/%Y %H:%M:%S").encode())
-ack=c.recv(1024).decode()
-if ack:
-      print(ack)
-c.close()
+import socket 
+s=socket.socket() 
+s.connect(('localhost',8000)) 
+while True: 
+    msg=input("Client > ") 
+    s.send(msg.encode()) 
+    print("Server > ",s.recv(1024).decode())
 ```
 Server
 
 ```
-import socket
-s=socket.socket()
-s.connect(('localhost',8000))
-print(s.getsockname())
-print(s.recv(1024).decode())
-s.send("acknowledgement recived from the server".encode())
+import socket 
+s=socket.socket() 
+s.bind(('localhost',8000)) 
+s.listen(5) 
+c,addr=s.accept() 
+while True: 
+            ClientMessage=c.recv(1024).decode() 
+            print("Client > ",ClientMessage) 
+            msg=input("Server > ") 
+            c.send(msg.encode())
 ```
 
 Output
 
-![Screenshot (177)](https://github.com/user-attachments/assets/9ddfb286-1240-4228-92ac-835aaa370796)
+![Screenshot (226)](https://github.com/user-attachments/assets/09fca263-4c87-4ad4-b4ce-50dace9352b9)
+
+
+
+![Screenshot (227)](https://github.com/user-attachments/assets/79538979-94f8-4d54-ace0-474f4afadf5a)
 
 
 
